@@ -15,6 +15,8 @@ int main(int ac, char **av, char **env)
 	ssize_t nread;
 	char *ex = "exit\n", *pth = "PATH";
 	struct stat st;
+	struct dirent *sd;
+	DIR *dir;
 
 	while (z == 0)
 	{
@@ -37,12 +39,36 @@ int main(int ac, char **av, char **env)
 
 					//_strncat(folders, &slash, 1);
 					//_strncat(folders, line, _strlen(line));
-					
+
 					//if (stat(folders, &st) == 0)
 					//{
 					//	printf("YEA\n");
 					//}
-					opendir(folders);
+					//opendir(folders);
+					dir = opendir(folders);
+					if(dir == NULL)
+                                        {
+                                                printf("unable to open dir");
+                                                return(-1);
+                                        }
+
+                                        while( (sd = readdir(dir)))
+                                                        {
+                                                        if((_strcmp(folders, "/") == 0) && (_strcmp(folders, line) == 0))
+                                                {
+                                                                printf("found %s\n",sd->d_name);
+                                                                break;
+
+                                                        }
+                                                                else
+                                                                printf("Not found%s\n",sd->d_name);
+                                                                break;
+
+                                                        }
+
+
+                                        closedir(dir);
+
 					printf("%s\n", folders);
 				}
 

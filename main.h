@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <dirent.h>
+struct dirent *readdir(DIR *dirp);
 
 int _putchar(char c);
 int _strcmp(char *s1, char *s2);
