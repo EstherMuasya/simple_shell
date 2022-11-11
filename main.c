@@ -7,13 +7,13 @@
  */
 int main(int ac, char **av, char **env)
 {
-	int i = 0, z = 0;
-	char **fold = NULL;
+	int i = 0, z = 0, x = 1, fnd = 0;
 	unsigned int m = 0, n = 0;
-	char *line = NULL, *folders = NULL, eq = '=', col = ':';
 	size_t len = 0;
 	ssize_t nread;
-	char *ex = "exit\n", *pth = "PATH";
+	char **fold = NULL, *line = NULL, *folders = NULL;
+	char eq = '=', col = ':', nl = '\n';
+	char *ex = "exit\n", *pth = "PATH", *saveptr;
 	struct stat st;
 	struct dirent *sd;
 	DIR *dir;
@@ -24,27 +24,20 @@ int main(int ac, char **av, char **env)
 		_putchar(32);
 
 		nread = getline(&line, &len, stdin);
+		printf("Your input command is %s Let's search for it in path\n", line);
 
 		while (env[i] != NULL)
 		{
-			folders = strtok(env[i], &eq);
-		//	printf("%s\n", folders);
-			if (_strcmp(pth, folders) == 0)
+			folders = strtok_r(env[i], &eq, &saveptr);
+			if (_strcmp(pth, folders) == 0 && fnd == 0)
 			{
-				while (folders)
+			
+				folders = strtok_r(NULL, &col, &saveptr);
+				while (folders && fnd == 0)
 				{
-					folders = strtok(NULL, &eq);
 					if (folders == NULL)
 						break;
 
-					//_strncat(folders, &slash, 1);
-					//_strncat(folders, line, _strlen(line));
-
-					//if (stat(folders, &st) == 0)
-					//{
-					//	printf("YEA\n");
-					//}
-					//opendir(folders);
 					dir = opendir(folders);
 					if(dir == NULL)
                                         {
@@ -52,36 +45,45 @@ int main(int ac, char **av, char **env)
                                                 return(-1);
                                         }
 
-                                        while( (sd = readdir(dir)))
-                                                        {
-                                                        if((_strcmp(folders, "/") == 0) && (_strcmp(folders, line) == 0))
-                                                {
-                                                                printf("found %s\n",sd->d_name);
-                                                                break;
+                                        while(x = 1)
+					{
+						sd = readdir(dir);
+						if (sd == NULL)
+						{
+							break;
+						}
+						line = strtok(line, &nl);
 
-                                                        }
-                                                                else
-                                                                printf("Not found%s\n",sd->d_name);
-                                                                break;
+						if(_strcmp(line, sd->d_name) == 0)
+						{
+							printf("found %s, in %s, now we can stop\n", sd->d_name, folders);
+							x = 0;
+							fnd = 1;
+							break;
+						}
+                                              	else
+						{
+							continue;
+                                                }
+					}
+					if (fnd == 1 && x == 0)
+						break;
 
-                                                        }
+	                                closedir(dir);
 
-
-                                        closedir(dir);
-
-					printf("%s\n", folders);
+					folders = strtok_r(NULL,&col, &saveptr);
+					if (folders)
+						printf("looking for the input in: %s\n", folders);
+					else
+						printf("NULL folder coz its at the end\n");
 				}
-
-			}
-
+			}	
 			i++;
 		}
+	
 		if (_strcmp(ex, line) == 0)
-		{
 			return (0);
-		}
+		
 	}
-
-
 	return (0);
 }
