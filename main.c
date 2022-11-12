@@ -20,7 +20,7 @@ int main(int ac, char **av, char **env)
 	struct stat st;
 	struct dirent *sd;
 	DIR *dir;
-	char *argv[] = {"folders", "-l", NULL};
+	char *argv[] = {"usr/bin/ls", "-l", NULL};
 
 	while (z == 0)
 	{
