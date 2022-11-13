@@ -10,7 +10,9 @@ int main(void)
 
 	while (z == 0)
 	{
-		printf("$ ");
+		_putchar('$');
+		_putchar(32);
+
 		z = executOR();
 		if (z != 0 && z != 2)
 			break;
