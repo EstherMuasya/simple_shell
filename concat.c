@@ -1,4 +1,5 @@
-#include "main.h"
+#include "mShell.h"
+
 /**
  * _strncat - appends n bytes frm src to dest string
  * @dest: destination string
@@ -7,7 +8,6 @@
  *
  * Return: pointer to dest
  */
-
 char *_strncat(char *dest, char *src, int n)
 {
 	int i = 0;
@@ -32,6 +32,38 @@ char *_strncat(char *dest, char *src, int n)
 			i++;
 			j++;
 		}
+	}
+
+	*dest = '\0';
+	dest = dest - i;
+
+
+	return (dest);
+}
+/**
+ * _strcat - appends src to dest string
+ * @dest: destination string
+ * @src: source string
+ * Return: pointer to dest
+ */
+char *_strcat(char *dest, char *src)
+{
+	int i = 0;
+
+	while (*dest != '\0')
+	{
+		dest++;
+		i++;
+	}
+
+
+	while (*src != '\0')
+	{
+		*dest = *(src);
+
+		dest++;
+		src++;
+		i++;
 	}
 
 	*dest = '\0';
