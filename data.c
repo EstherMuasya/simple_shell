@@ -81,7 +81,7 @@ int promptgetter(shellData *d)
 {
 	int input;
 	size_t len = 0;
-	char *line = NULL, *exit = "exit"; 
+	char *line = NULL, *exit = "exit";
 	char **argv = NULL;
 
 	_putchar('$');

@@ -42,7 +42,6 @@ int splitlen(char *str)
 /**
  * strtow - splits a string to words
  * @str: string to split
- * @d: delimeter
  *
  * Return: pointer to array of words or NULL
  */
