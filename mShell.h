@@ -78,4 +78,6 @@ int checkInteractive(shellData *);
 
 char *pathFinder(char *arg, char **env, shellData *);
 void err(shellData *);
+void _puts(char *str);
+void _printenv(char **env);
 #endif

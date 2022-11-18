@@ -16,7 +16,8 @@ int main(int ac, char **av, char **env)
 	d = initData(ac, av, env);
 	checkInteractive(d);
 	if (d->interAct == 1)
-	{	argvgetter(d, av);
+	{
+		argvgetter(d, av);
 		if (d->exitStatus == 0)
 			crunner(d->command, env, d);
 		d->interAct = 2;

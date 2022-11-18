@@ -72,3 +72,38 @@ char *_strcat(char *dest, char *src)
 
 	return (dest);
 }
+/**
+ * _puts - prints string
+ * @str: the string pointer
+ *
+ * Return: void
+ */
+
+void _puts(char *str)
+{
+	int i = 0;
+
+	while (*str != 0)
+	{
+		_putchar(*str);
+		str++;
+		i++;
+	}
+	_putchar(10);
+}
+/**
+ * _printenv - print env vars
+ * @env: environ
+ *
+ * Return: void
+ */
+void _printenv(char **env)
+{
+	int i = 0;
+
+	while (env[i] != NULL)
+	{
+		_puts(env[i]);
+		i++;
+	}
+}

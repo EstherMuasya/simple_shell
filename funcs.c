@@ -40,24 +40,29 @@ int crunner(char *s, char **nv, shellData *d)
 	pid_t pid;
 	int val, wai;
 	char *argv[] = {"", NULL};
+	char *env = "env";
 
 	argv[0] = s;
+	if (_strcmp(argv[0], env) == 0)
+	{	_printenv(nv);
+		return (0);
+	}
 	pid = fork();
 	if (pid == -1)
-	{	perror("piderror");
+	{	err(d);
 		return (0);
 	}
 	if (pid == 0)
-	{       val = execve(argv[0], argv, NULL);
+	{       val = execve(argv[0], d->options, NULL);
 		if (val == -1)
 		{	argv[0] = pathFinder(argv[0], nv, d);
 			if (argv[0] == NULL)
-			{	perror(d->shellName);
+			{	err(d);
 				return (0);
 			}
-			val = execve(argv[0], argv, NULL);
+			val = execve(argv[0], d->options, NULL);
 			if (val == -1)
-			{	perror(d->shellName);
+			{	err(d);
 				return (0);
 			}
 		}
@@ -135,7 +140,7 @@ char *pathFinder(char *arg, char **env, shellData *d)
 				folders = strtok_r(NULL, &col, &saveptr); }}
 		i++;
 		if (!folders)
-			perror(d->shellName);
+			err(d);
 		if (_strcmp(folders, old) == 0)
 			folders = NULL; }
 	return (NULL);

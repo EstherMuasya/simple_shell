@@ -71,7 +71,6 @@ char **listConvert(list_st **strlist)
 	{
 		return (NULL);
 	}
-
 	new = *strlist;
 	i = 0;
 	while (new)
@@ -84,12 +83,11 @@ char **listConvert(list_st **strlist)
 		i++;
 	}
 	new = *strlist;
-/*	freelist(new);*/
 	return (list);
 }
 /**
  * freelist - frees the list
- * @strlist: linked list to free
+ * @strlist: char array to free
  *
  * Return: 0
  */

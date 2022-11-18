@@ -69,6 +69,7 @@ int argvgetter(shellData *d, char **av)
 	opt = opt + 1;
 	d->options = opt;
 	d->command = av[1];
+	printf("Got gotter\n");
 	return (0);
 }
 /**
@@ -84,13 +85,17 @@ int promptgetter(shellData *d)
 	char *line = NULL, *exit = "exit";
 	char **argv = NULL;
 
-	_putchar('$');
-	_putchar(32);
+	if (isatty(0))
+	{
+		_putchar('$');
+		_putchar(32);
+	}
 	input = getline(&line, &len, stdin);
 	if (input == -1)
 	{
 		if (input == EOF)
-		{	d->exitStatus = 1;
+		{	close(0);
+			d->exitStatus = 1;
 			return (0);
 		}
 		err(d);
@@ -103,21 +108,33 @@ int promptgetter(shellData *d)
 	}
 	line = stRemovenl(line);
 	if (_strcmp(exit, line) == 0)
-	{	d->exitStatus = 1;
+	{
+		d->exitStatus = 1;
 		return (0);
 	}
 	argv = strtow(line);
 	d->command = _strdup(argv[0]);
-	d->options = &argv[1];
+	d->options = &argv[0];
 	return (0);
 }
 /**
  * err - handler for error
  *@d: data
- *
+*
  * Return: void
  */
 void err(shellData *d)
 {
-	perror(d->shellName);
+	char *s;
+	char *e = ": 1: ";
+	char *f = ": not found";
+
+	s = _strdup(d->shellName);
+	s = _strcat(s, e);
+	s = _strcat(s, d->command);
+	s = _strcat(s, f);
+
+	_puts(s);
+	if (s)
+		free(s);
 }
