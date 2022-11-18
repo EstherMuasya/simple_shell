@@ -30,40 +30,41 @@ char *stRemovenl(char *line)
 /**
  * crunner - all these ops be.. runnin'
  * @s: command
- * @nv: environment
+ * @nv: environmen
+ * @d: shell datat
  *
  * Return: 1 on success
  */
-int crunner(char *s, char **nv)
+int crunner(char *s, char **nv, shellData *d)
 {
 	pid_t pid;
-	int val;
+	int val, wai;
 	char *argv[] = {"", NULL};
 
 	argv[0] = s;
 	pid = fork();
 	if (pid == -1)
-	{	perror("s");
+	{	perror("piderror");
 		return (0);
 	}
 	if (pid == 0)
 	{       val = execve(argv[0], argv, NULL);
 		if (val == -1)
-		{	argv[0] = pathFinder(argv[0], nv);
+		{	argv[0] = pathFinder(argv[0], nv, d);
 			if (argv[0] == NULL)
-			{	perror("s");
+			{	perror(d->shellName);
 				return (0);
 			}
 			val = execve(argv[0], argv, NULL);
 			if (val == -1)
-			{	perror("s");
+			{	perror(d->shellName);
 				return (0);
 			}
 		}
 	}
 	else
-	{	wait(0);
-		return (0);
+	{
+		wait(&wai);
 	}
 	return (0);
 }
@@ -93,19 +94,20 @@ char *_strdup(const char *str)
 * pathFinder -  finds the file in PATH
  * @arg: command to lookup
  * @env: the environment variables
+ * @d: shell data
  *
  * Return: full path of file if found, null otherwise
  */
-char *pathFinder(char *arg, char **env)
+char *pathFinder(char *arg, char **env, shellData *d)
 {
-	int i = 0, fnd = 0, x = 1;
-	char *folders = NULL, *saveptr = NULL, *pth = "PATH";
-	char eq = '=', col = ':', *line = arg;
+	int i = 0, fnd = 0;
+	char *saveptr = NULL, *pth = "PATH";
+	char eq = '=', col = ':', *line = arg, *old = "OLDPWD";
 	DIR *dir;
 	struct dirent *sd;
 
 	while (env[i] != NULL)
-	{	folders = strtok_r(env[i], &eq, &saveptr);
+	{	char *folders = strtok_r(env[i], &eq, &saveptr);
 		if (_strcmp(pth, folders) == 0 && fnd == 0)
 		{	folders = strtok_r(NULL, &col, &saveptr);
 			while (folders && fnd == 0)
@@ -115,26 +117,26 @@ char *pathFinder(char *arg, char **env)
 				dir = opendir(folders);
 				if (dir == NULL)
 					return (NULL);
-				while (x == 1)
-				{	sd = readdir(dir);
+				while ((sd = readdir(dir)) != NULL)
+				{
 					if (sd == NULL)
 						break;
 					if (_strcmp(line, sd->d_name) == 0)
 					{	char *thPath = folders;
 						_strcat(thPath, "/");
 						_strcat(thPath, sd->d_name);
-						x = 0;
 						fnd = 1;
+						closedir(dir);
 						return (thPath);
 					}
 					else
-					{	continue;
-					}
-				if (fnd == 1 && x == 0)
-					break;
+						continue; }
 				closedir(dir);
-				folders = strtok_r(NULL, &col, &saveptr);
-			}}}
-		i++; }
+				folders = strtok_r(NULL, &col, &saveptr); }}
+		i++;
+		if (!folders)
+			perror(d->shellName);
+		if (_strcmp(folders, old) == 0)
+			folders = NULL; }
 	return (NULL);
 }

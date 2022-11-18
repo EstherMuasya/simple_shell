@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/wait.h>
-
+#include <errno.h>
 /**
  * struct liststr - singly linked list of strings
   * @str: the string
@@ -73,8 +73,9 @@ shellData *initData(int ac, char **av, char **env);
 
 int argvgetter(shellData *, char **av);
 int promptgetter(shellData *);
-int crunner(char *, char **env);
+int crunner(char *, char **env, shellData *);
 int checkInteractive(shellData *);
 
-char *pathFinder(char *arg, char **env);
+char *pathFinder(char *arg, char **env, shellData *);
+void err(shellData *);
 #endif

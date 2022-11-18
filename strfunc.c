@@ -41,7 +41,7 @@ int splitlen(char *str)
 }
 /**
  * strtow - splits a string to words
- * @str: string to split
+ * @str: string to splitr
  *
  * Return: pointer to array of words or NULL
  */

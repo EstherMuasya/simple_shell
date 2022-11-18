@@ -84,6 +84,7 @@ char **listConvert(list_st **strlist)
 		i++;
 	}
 	new = *strlist;
+/*	freelist(new);*/
 	return (list);
 }
 /**

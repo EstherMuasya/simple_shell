@@ -61,21 +61,21 @@ int argvgetter(shellData *d, char **av)
 	{
 		i++;
 	}
-	opt = av;
-	opt = opt + 1;
-	d->options = opt;
-	d->command = av[1];
 	if (_strcmp(av[1], exit) == 0)
 	{	d->exitStatus = 1;
 		return (0);
 	}
+	opt = av;
+	opt = opt + 1;
+	d->options = opt;
+	d->command = av[1];
 	return (0);
 }
 /**
  * promptgetter - displays prompt, gets cmd and opt
  * @d: shell's data
  *
- * Return: 0
+ * Return: 0. 1 to not execute
  */
 int promptgetter(shellData *d)
 {
@@ -88,27 +88,36 @@ int promptgetter(shellData *d)
 	_putchar(32);
 	input = getline(&line, &len, stdin);
 	if (input == -1)
-	{	free(line);
-		perror("input");
+	{
+		if (input == EOF)
+		{	d->exitStatus = 1;
+			return (0);
+		}
+		err(d);
 		d->exitStatus = 1;
 		return (0);
 	}
 	if (input == 1)
 	{
-		free(line);
-		return (0);
+		return (1);
 	}
 	line = stRemovenl(line);
 	if (_strcmp(exit, line) == 0)
-	{	free(line);
-		d->exitStatus = 1;
+	{	d->exitStatus = 1;
 		return (0);
 	}
 	argv = strtow(line);
 	d->command = _strdup(argv[0]);
 	d->options = &argv[1];
-
-	if (line)
-		free(line);
 	return (0);
+}
+/**
+ * err - handler for error
+ *@d: data
+ *
+ * Return: void
+ */
+void err(shellData *d)
+{
+	perror(d->shellName);
 }
