@@ -53,14 +53,14 @@ int crunner(char *s, char **nv, shellData *d)
 		return (0);
 	}
 	if (pid == 0)
-	{       val = execve(argv[0], d->options, NULL);
+	{       val = execve(argv[0], d->options, nv);
 		if (val == -1)
 		{	argv[0] = pathFinder(argv[0], nv, d);
 			if (argv[0] == NULL)
 			{	err(d);
 				return (0);
 			}
-			val = execve(argv[0], d->options, NULL);
+			val = execve(argv[0], d->options, nv);
 			if (val == -1)
 			{	err(d);
 				return (0);
