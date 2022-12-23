@@ -10,7 +10,7 @@
  */
 int main(int ac, char **av, char **env)
 {
-	int r = 0;
+	int r = 0, i = 0;
 	shellData *d;
 
 	d = initData(ac, av, env);
@@ -32,13 +32,18 @@ int main(int ac, char **av, char **env)
 		else
 			break;
 	}
-	if (d->interAct != 2)
+	if (d->options && d->tFree == 1)
 	{
-		if (d->command)
-			free(d->command);
-		if (d)
-			free(d);
+		while (d->options[i])
+		{	free(d->options[i]);
+			i++;
+		}
+		free(d->options);
 	}
+	if (d->command)
+		free(d->command);
+	if (d)
+		free(d);
 	return (0);
 }
 

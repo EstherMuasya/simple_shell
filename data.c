@@ -29,6 +29,7 @@ shellData *initData(int ac, char **av, char **env)
 	d->argvNo = ac;
 	d->exitStatus = 0;
 	d->interAct = 0;
+	d->tFree = 1;
 /**	d->history = initlist();*/
 	return (d);
 }
@@ -69,7 +70,7 @@ int argvgetter(shellData *d, char **av)
 	opt = opt + 1;
 	d->options = opt;
 	d->command = av[1];
-	printf("Got gotter\n");
+	d->tFree = 0;
 	return (0);
 }
 /**
@@ -96,25 +97,32 @@ int promptgetter(shellData *d)
 		if (input == EOF)
 		{	close(0);
 			d->exitStatus = 1;
+			free(line);
 			return (0);
 		}
 		err(d);
 		d->exitStatus = 1;
+		free(line);
 		return (0);
 	}
 	if (input == 1)
-	{
+	{	free(line);
 		return (1);
 	}
 	line = stRemovenl(line);
 	if (_strcmp(exit, line) == 0)
 	{
 		d->exitStatus = 1;
+		free(line);
 		return (0);
 	}
 	argv = strtow(line);
+	if (argv == NULL)
+		return (0);
 	d->command = _strdup(argv[0]);
 	d->options = &argv[0];
+	d->tFree = 1;
+	free(line);
 	return (0);
 }
 /**

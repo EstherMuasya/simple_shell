@@ -47,6 +47,7 @@ typedef struct allvars
 
 	int exitStatus;
 	int interAct;
+	int tFree;
 
 	list_st history;
 
@@ -66,7 +67,7 @@ int is_delim(char c, char *delim);
 int listAdd(char *word, list_st **strlist);
 char **listConvert(list_st **strlist);
 char *stRemovenl(char *line);
-int freelist(list_st *strlist);
+int freelist(list_st **strlist);
 char *_strdup(const char *str);
 /** shell functions*/
 shellData *initData(int ac, char **av, char **env);

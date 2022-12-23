@@ -1,6 +1,6 @@
 #include "mShell.h"
 /**
- * listAdd - adds word to strlist
+ * listAdd - adds word to str-linked list
  * @word: word from strtok
  * @strlist: linked list
  *
@@ -8,10 +8,8 @@
  */
 int listAdd(char *word, list_st **strlist)
 {
-	int i = 0;
 	list_st *new;
 
-	i = _strlen(word);
 	new = malloc(sizeof(list_st));
 	if (new == NULL)
 	{
@@ -19,14 +17,13 @@ int listAdd(char *word, list_st **strlist)
 		return (0);
 	}
 
-	new->str = malloc((sizeof(char) * i) + 1);
+	new->str = strdup(word);
 	if (new->str == NULL)
 	{
 		free(new->str);
 		return (0);
 	}
 
-	new->str = word;
 	new->next = NULL;
 
 	if (*strlist == NULL)
@@ -51,7 +48,7 @@ int listAdd(char *word, list_st **strlist)
  * listConvert - convert linked list to string array
  * @strlist: linked list
  *
- * Return: linked list
+ * Return: string array
  */
 char **listConvert(list_st **strlist)
 {
@@ -60,50 +57,53 @@ char **listConvert(list_st **strlist)
 	list_st *new;
 
 	new = *strlist;
+	i++;
 	while (new->next != NULL)
 	{
 		i++;
 		new = new->next;
 	}
-
-	list = malloc(sizeof(char *) * i);
+	list = malloc((sizeof(char *) * (i + 1)));
 	if (!list)
-	{
+	{	free (list);
 		return (NULL);
 	}
 	new = *strlist;
 	i = 0;
 	while (new)
 	{
-		list[i] = malloc(sizeof(char) * _strlen(new->str));
-		if (!list[i])
-			return (NULL);
-		list[i] = new->str;
-		new = new->next;
-		i++;
+		int m = _strlen(new->str);
+
+		if (m > 0)
+		{	list[i] = strdup(new->str);
+			if (!list[i])
+				return (NULL);
+			new = new->next;
+			i++;
+		}
 	}
-	new = *strlist;
+	list[i] = NULL;
 	return (list);
 }
 /**
  * freelist - frees the list
- * @strlist: char array to free
+ * @strlist: linked list to free
  *
  * Return: 0
  */
-int freelist(list_st *strlist)
+int freelist(list_st **strlist)
 {
-	list_st *new = strlist;
+	list_st *strl = *strlist;
 
-	while (new)
+	while (strl)
 	{
-		list_st *current = new;
+		list_st *c = strl;
 
-		new = new->next;
-		if (current->str)
-			free(current->str);
-		if (current)
-			free(current);
+		strl = strl->next;
+		if (c->str)
+			free(c->str);
+		if (c)
+			free(c);
 	}
 	return (0);
 }

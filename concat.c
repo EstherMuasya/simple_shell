@@ -48,29 +48,30 @@ char *_strncat(char *dest, char *src, int n)
  */
 char *_strcat(char *dest, char *src)
 {
-	int i = 0;
+	int i = 0, m = 0, j = 0;
+	char *ret;
 
-	while (*dest != '\0')
-	{
-		dest++;
+	while (dest[i] != '\0')
+		i++;
+	while (src[m] != '\0')
+	{	m++;
 		i++;
 	}
-
-
-	while (*src != '\0')
+	ret = malloc(sizeof(char) * (i + 1));
+	if (!ret)
+		return (NULL);
+	while (dest[j] != '\0')
 	{
-		*dest = *(src);
-
-		dest++;
-		src++;
-		i++;
+		ret[j] = dest[j];
+		j++;
 	}
+	for (i = 0; i < m; i++, j++)
+		ret[j] = src[i];
 
-	*dest = '\0';
-	dest = dest - i;
+	ret[j] = '\0';
+	printf("\n_strcat: src :%s: dest :%s: ret :%s: \n", src, dest, ret);
 
-
-	return (dest);
+	return (ret);
 }
 /**
  * _puts - prints string

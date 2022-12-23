@@ -56,6 +56,7 @@ int crunner(char *s, char **nv, shellData *d)
 	{       val = execve(argv[0], d->options, nv);
 		if (val == -1)
 		{	argv[0] = pathFinder(argv[0], nv, d);
+			printf("Argv[0] is: [%s]", argv[0]);
 			if (argv[0] == NULL)
 			{	err(d);
 				return (0);
@@ -128,8 +129,8 @@ char *pathFinder(char *arg, char **env, shellData *d)
 						break;
 					if (_strcmp(line, sd->d_name) == 0)
 					{	char *thPath = folders;
-						_strcat(thPath, "/");
-						_strcat(thPath, sd->d_name);
+						thPath = _strcat(thPath, "/");
+						thPath = _strcat(thPath, sd->d_name);
 						fnd = 1;
 						closedir(dir);
 						return (thPath);
