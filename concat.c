@@ -69,7 +69,6 @@ char *_strcat(char *dest, char *src)
 		ret[j] = src[i];
 
 	ret[j] = '\0';
-	printf("\n_strcat: src :%s: dest :%s: ret :%s: \n", src, dest, ret);
 
 	return (ret);
 }
