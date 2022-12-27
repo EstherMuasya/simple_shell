@@ -39,7 +39,7 @@ int crunner(char *s, char **nv, shellData *d)
 {
 	pid_t pid;
 	int val, wai;
-	char *argv[] = {"", NULL};
+	char *argv[] = {NULL, NULL};
 	char *env = "env";
 
 	argv[0] = s;
@@ -56,7 +56,6 @@ int crunner(char *s, char **nv, shellData *d)
 	{       val = execve(argv[0], d->options, nv);
 		if (val == -1)
 		{	argv[0] = pathFinder(argv[0], nv, d);
-			printf("Argv[0] is: [%s]", argv[0]);
 			if (argv[0] == NULL)
 			{	err(d);
 				return (0);
@@ -104,7 +103,7 @@ char *_strdup(const char *str)
  *
  * Return: full path of file if found, null otherwise
  */
-char *pathFinder(char *arg, char **env, shellData *d)
+char *pathFinder(char *arg, char **env, __attribute__((unused))shellData *d)
 {
 	int i = 0, fnd = 0;
 	char *saveptr = NULL, *pth = "PATH";
@@ -140,8 +139,6 @@ char *pathFinder(char *arg, char **env, shellData *d)
 				closedir(dir);
 				folders = strtok_r(NULL, &col, &saveptr); }}
 		i++;
-		if (!folders)
-			err(d);
 		if (_strcmp(folders, old) == 0)
 			folders = NULL; }
 	return (NULL);

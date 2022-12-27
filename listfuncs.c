@@ -65,7 +65,7 @@ char **listConvert(list_st **strlist)
 	}
 	list = malloc((sizeof(char *) * (i + 1)));
 	if (!list)
-	{	free (list);
+	{	free(list);
 		return (NULL);
 	}
 	new = *strlist;

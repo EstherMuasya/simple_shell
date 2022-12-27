@@ -69,8 +69,7 @@ int argvgetter(shellData *d, char **av)
 	opt = av;
 	opt = opt + 1;
 	d->options = opt;
-	d->command = av[1];
-	d->tFree = 0;
+	d->command = _strdup(av[1]);
 	return (0);
 }
 /**
@@ -87,10 +86,8 @@ int promptgetter(shellData *d)
 	char **argv = NULL;
 
 	if (isatty(0))
-	{
-		_putchar('$');
-		_putchar(32);
-	}
+	{	_putchar('$');
+		_putchar(32); }
 	input = getline(&line, &len, stdin);
 	if (input == -1)
 	{
@@ -111,8 +108,7 @@ int promptgetter(shellData *d)
 	}
 	line = stRemovenl(line);
 	if (_strcmp(exit, line) == 0)
-	{
-		d->exitStatus = 1;
+	{	d->exitStatus = 1;
 		free(line);
 		return (0);
 	}
